@@ -7,8 +7,17 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+// var login1 = require('./routes/login1');
+var login = require('./routes/login');
+var api = require('./routes/api');
+var auth = require('./routes/auth');
 
 var app = express();
+
+var passport = require('passport') //passport module add
+  , LocalStrategy = require('passport-local').Strategy;
+var cookieSession = require('cookie-session');
+var flash = require('connect-flash');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -21,9 +30,22 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'node_modules')));
+
+app.use(cookieSession({
+  keys: ['node_yun'],
+  cookie: { maxAge: 1000 * 60 * 60 } // 유효기간 1시간
+}));
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());  
 
 app.use('/', index);
 app.use('/users', users);
+// app.use('/login1', login1);
+app.use('/login', login);
+app.use('/api/v1', api);
+app.use('/auth', auth);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

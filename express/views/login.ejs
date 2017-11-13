@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>
+    <%= title %> Login</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.min.css">
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+
+</head>
+
+<body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        <%= title %>
+      </h1>
+      <form action="/login" method="post" name="frm_login" id="frm_login">
+
+        <div class="field column is-half">
+          <label class="label">Username</label>
+          <div class="control has-icons-left has-icons-right">
+            <input type="text" id="username" name="username" class="input is-success " placeholder="username" value="asdf">
+            <span class="icon is-small is-left">
+              <i class="fa fa-user"></i>
+            </span>
+          </div>
+          <!-- <p class="help is-success">This username is available</p> -->
+        </div>
+
+        <div class="field column is-half">
+          <p class="control has-icons-left">
+            <input type="password" id="password" name="password" class="input" placeholder="Password">
+            <span class="icon is-small is-left">
+              <i class="fa fa-lock"></i>
+            </span>
+          </p>
+        </div>
+
+        <div class="field column is-half">
+          <input type="submit" value="Login" class="button is-primary" />
+        </div>
+      
+      </form>
+      <div class="field column is-half">
+        <!-- <input type="submit" class="btn btn-block btn-lg btn-default btn_login" value="Login" /> -->
+        <a href="/auth/login/facebook" class="button is-link">FaceBook</a>
+        <a href="/auth/login/kakao" class="button is-warning">KaKao</a>
+        <a href="/auth/login/naver" class="button is-success">Naver</a>
+      </div>
+  </section>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="/javascripts/login.js"></script>
+
+</html>
