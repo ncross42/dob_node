@@ -1,3 +1,6 @@
 [submodule "hackstart"]
 	path = hackstart
 	url = https://github.com/ncross42/hackathon-starter.git
+[submodule "element"]
+	path = element
+	url = https://github.com/ncross42/vue-element-starter.git
