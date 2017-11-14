@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var pool = require('../config/mysql_pool');
+var secret_config = require('../config/sns_keys');
 
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
@@ -14,10 +15,11 @@ function loginByThirdparty(info, done) {
     if (err) {
       return done(err);
     } else {
+      console.log(info);
       if (result.length === 0) {
         // 신규 유저는 회원 가입 이후 로그인 처리
-        let sql_thridparty_signup = 'INSERT INTO `user` SET `user_id`= ?, `nickname`= ?';
-        pool.query(sql_thridparty_signup, [info.auth_id, info.auth_name], function (err, result) {
+        let sql_insert_user = 'INSERT INTO `user` SET `user_id`= ?, `nickname`= ?, `password`=?, `accessToken`=?';
+        pool.query(sql_insert_user, [info.auth_id, info.auth_name, info.auth_type, info.auth_accessToken], function (err, result) {
           if (err) {
             return done(err);
           } else {
@@ -41,7 +43,9 @@ function loginByThirdparty(info, done) {
 
 // facebook 로그인
 router.get('/login/facebook',
-  passport.authenticate('facebook')
+  passport.authenticate('facebook', {
+    authType: 'rerequest', scope: ['public_profile', 'email']
+  })
 );
 // facebook 로그인 연동 콜백
 router.get('/login/facebook/callback',
@@ -50,14 +54,15 @@ router.get('/login/facebook/callback',
     failureRedirect: '/login'
   })
 );
-/*
+
 // 페이스북으로 로그인 처리
 passport.use(new FacebookStrategy({
   clientID: secret_config.federation.facebook.client_id,
   clientSecret: secret_config.federation.facebook.secret_id,
   callbackURL: secret_config.federation.facebook.callback_url,
-  profileFields: ['id', 'email', 'gender', 'link', 'locale', 'name', 'timezone',
-    'updated_time', 'verified', 'displayName']
+  profileFields: 
+    ['id', 'email', 'locale', 'displayName', 'verified', 'updated_time' ]
+    //['id', 'email', 'gender', 'link', 'locale', 'name', 'timezone', 'updated_time', 'verified', 'displayName']
 }, function (accessToken, refreshToken, profile, done) {
   var _profile = profile._json;
 
@@ -66,14 +71,15 @@ passport.use(new FacebookStrategy({
 
   loginByThirdparty({
     'auth_type': 'facebook',
+    'auth_accessToken': accessToken,
     'auth_id': _profile.id,
     'auth_name': _profile.name,
-    'auth_email': _profile.id
+    'auth_email': _profile.email
   }, done);
 }
 ));
 
-
+/*
 // naver 로그인
 router.get('/login/naver',
   passport.authenticate('naver')

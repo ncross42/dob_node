@@ -7,8 +7,8 @@ module.exports = {
       'callback_url' : '/auth/login/naver/callback'
     },
     'facebook' : {
-      'client_id' : '',
-      'secret_id' : '',
+      'client_id' : '1423284861312771',
+      'secret_id' : '1873ba07faf1a39f822f85a15840657e',
       'callback_url' : '/auth/login/facebook/callback'
     },
     'kakao' : {
