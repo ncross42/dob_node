@@ -1,0 +1,3 @@
+[submodule "hackstart"]
+	path = hackstart
+	url = https://github.com/ncross42/hackathon-starter.git
